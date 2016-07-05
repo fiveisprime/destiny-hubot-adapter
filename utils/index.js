@@ -108,7 +108,7 @@ exports.getCharacterInventory = (bot, playerId, characterId, done) => {
       })
     })
 
-    itemsData = (ref = []).concat.apply(ref, validItems);
+    itemsData = (ref = []).concat.apply(ref, validItems)
 
     items = itemsData.map((item) => {
       return dataHelper.serializeFromApi(item, definitions)
