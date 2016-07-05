@@ -1,12 +1,12 @@
 const Fs = require('fs')
 const Path = require('path')
 
-module.exports = (bot, scripts) => {
-  var scriptsPath = Path.resolve(__direname, 'scripts')
+module.exports = (robot, scripts) => {
+  var scriptsPath = Path.resolve(__dirname, 'scripts')
 
   Fs.exists(scriptsPath, (exists) => {
     if (exists) {
-      fs.readdirSync(scriptsPath).forEach((path) => {
+      Fs.readdirSync(scriptsPath).forEach((script) => {
         if (scripts && scipts.indexOf(script) >= 0)
           robot.loadFile(scriptsPath, script)
         else

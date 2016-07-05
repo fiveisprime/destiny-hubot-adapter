@@ -1,4 +1,4 @@
-const DataHelper = require('./bungie-data-helper')
+const DataHelper = require('./data-helper')
 
 const BUNGIE_API_KEY = process.env.BUNGIE_API_KEY
 const BASE_URL = 'https://www.bungie.net/Platform/Destiny/'
@@ -35,7 +35,9 @@ var makeRequest = (bot, endpoint, params, done) => {
 exports.getPlayerId = (bot, name, done) => {
   var endpoint = `SearchDestinyPlayer/2/${name}`
 
-  makeRequest(bot, endpoint, (response) => {
+  makeRequest(bot, endpoint, (err, response) => {
+    if (err) return done(err)
+
     var data = response[0]
 
     if (!data) {
@@ -43,6 +45,18 @@ exports.getPlayerId = (bot, name, done) => {
     }
 
     done(null, data.membershipId)
+  })
+}
+
+exports.getCharacterId = (bot, playerId, done) => {
+  makeRequest(bot, `2/Account/${playerId}`, (err, response) => {
+    if (err) return done(err)
+
+    var data = response.data
+    var chars = data.characters
+    var recentChar = chars[0]
+
+    return done(null, recentChar.characterBase.characterId)
   })
 }
 
@@ -69,5 +83,37 @@ exports.getGrimoireScore = (bot, playerId, done) => {
 
   makeRequest(bot, endpoint, (err, response) => {
     done(err, response.data.score)
-  }
+  })
+}
+
+exports.getXurInventory = (bot, done) => {
+  var endpoint = 'Advisors/Xur'
+  var params = { definitions: true }
+
+  makeRequest(bot, endpoint, params, done)
+}
+
+exports.getCharacterInventory = (bot, playerId, characterId, done) => {
+  var endpoint = `2/Account/${playerId}/Character/${characterId}/Inventory`
+  var params = { definitions: true }
+
+  makeRequest(bot, endpoint, params, (err, response) => {
+    var definitions = response.definitions.items
+    var equippable = response.data.buckets.Equippable
+    var itemsData, items, ref
+
+    var validItems = equippable.map((x) => {
+      return x.items.filter((item) => {
+        return item.isEquipped && item.primaryStat
+      })
+    })
+
+    itemsData = (ref = []).concat.apply(ref, validItems);
+
+    items = itemsData.map((item) => {
+      return dataHelper.serializeFromApi(item, definitions)
+    })
+
+    done(null, items)
+  })
 }
