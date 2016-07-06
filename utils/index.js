@@ -98,6 +98,8 @@ exports.getCharacterInventory = (bot, playerId, characterId, done) => {
   var params = { definitions: true }
 
   makeRequest(bot, endpoint, params, (err, response) => {
+    if (err) return done(err)
+
     var definitions = response.definitions.items
     var equippable = response.data.buckets.Equippable
     var itemsData, items, ref

@@ -25,9 +25,11 @@ module.exports = class DataHelper {
 
   fetchDefs() {
     this.fetchStatDefs((err, response, body) => {
+      if (err) return console.error('Error:', err)
       this.statDefs = body
     })
     this.fetchVendorDefs((err, response, body) => {
+      if (err) return console.error('Error:', err)
       this.vendorDefs = body
     })
   }

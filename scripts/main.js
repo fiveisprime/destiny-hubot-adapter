@@ -24,6 +24,8 @@ module.exports = (bot) => {
     var query = res.match[1], items = []
 
     Utils.lookup(res, query, (err, response) => {
+      if (err) return console.error('Error:', err)
+
       items = response.map((item) => {
         return dataHelper.parseItemAttachment(item)
       })
@@ -39,10 +41,14 @@ module.exports = (bot) => {
     var playerName = res.match[1]
 
     Utils.getPlayerId(res, playerName, (err, playerId) => {
-      if (err) return console.error(err)
+      if (err) return console.error('Error:', err)
+
       Utils.getCharacterId(res, playerId, (err, characterId) => {
-        if (err) return console.error(err)
+        if (err) return console.error('Error:', err)
+
         Utils.getCharacterInventory(res, playerId, characterId, (err, response) => {
+          if (err) return console.error('Error:', err)
+
           var items = response.map((item) => {
             return dataHelper.parseItemAttachment(item)
           })
