@@ -6,7 +6,8 @@ const BASE_URL = 'https://www.bungie.net/Platform/Destiny/'
 var dataHelper = new DataHelper()
 
 var makeRequest = (bot, endpoint, params, done) => {
-  var qs = '', url = ''
+  var qs = ''
+  var url = ''
 
   if (typeof params === 'function') {
     done = params

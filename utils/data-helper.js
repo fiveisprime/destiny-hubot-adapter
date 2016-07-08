@@ -1,11 +1,7 @@
-const Util = require('util')
-
 const Request = require('request')
 
 module.exports = class DataHelper {
-  constructor() {}
-
-  fetchStatDefs(done) {
+  fetchStatDefs (done) {
     Request({
       method: 'GET',
       url: 'http://destiny.plumbing/raw/mobileWorldContent/en/DestinyStatDefinition.json',
@@ -14,7 +10,7 @@ module.exports = class DataHelper {
     }, done)
   }
 
-  fetchVendorDefs(done) {
+  fetchVendorDefs (done) {
     Request({
       method: 'GET',
       url: 'http://destiny.plumbing/raw/mobileWorldContent/en/DestinyStatDefinition.json',
@@ -23,7 +19,7 @@ module.exports = class DataHelper {
     }, done)
   }
 
-  fetchDefs() {
+  fetchDefs () {
     this.fetchStatDefs((err, response, body) => {
       if (err) return console.error('Error:', err)
       this.statDefs = body
@@ -34,7 +30,7 @@ module.exports = class DataHelper {
     })
   }
 
-  serializeFromApi(item, defs) {
+  serializeFromApi (item, defs) {
     var rarityColor = {
       Uncommon: '#f5f5f5',
       Common: '#2f6b3c',
@@ -63,13 +59,13 @@ module.exports = class DataHelper {
     }
   }
 
-  parseItemsForAttachment(items) {
+  parseItemsForAttachment (items) {
     return items.map((item) => {
       return this.parseItemAttachment(item)
     })
   }
 
-  parseItemAttachment(item) {
+  parseItemAttachment (item) {
     var hasStats = item.stats
     var statFields = hasStats ? this.buildStats(item.stats, item.primaryStat) : []
 
@@ -84,8 +80,9 @@ module.exports = class DataHelper {
     }
   }
 
-  buildStats(statsData, primaryData) {
-    var defs = this.statDefs, primaryStat
+  buildStats (statsData, primaryData) {
+    var defs = this.statDefs
+    var primaryStat
 
     var foundStats = statsData.map((stat) => {
       var found = defs[stat.statHash]

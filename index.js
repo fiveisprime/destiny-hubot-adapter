@@ -7,7 +7,7 @@ module.exports = (robot, scripts) => {
   Fs.exists(scriptsPath, (exists) => {
     if (exists) {
       Fs.readdirSync(scriptsPath).forEach((script) => {
-        if (scripts && scipts.indexOf(script) >= 0) {
+        if (scripts && scripts.indexOf(script) >= 0) {
           robot.loadFile(scriptsPath, script)
         } else {
           robot.loadFile(scriptsPath, script)

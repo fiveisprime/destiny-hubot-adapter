@@ -21,7 +21,8 @@ module.exports = (bot) => {
   })
 
   bot.respond(/lookup (.*)/i, (res) => {
-    var query = res.match[1], items = []
+    var query = res.match[1]
+    var items = []
 
     Utils.lookup(res, query, (err, response) => {
       if (err) return console.error('Error:', err)
@@ -69,7 +70,7 @@ module.exports = (bot) => {
       var itemsDefs = response.definitions.items
       var itemsCategories = response.data.saleItemCategories
       var exoticCategory = itemsCategories.filter((cat) => {
-        return cat.categoryTitle == 'Exotic Gear'
+        return cat.categoryTitle === 'Exotic Gear'
       })
       var exoticData = exoticCategory[0].saleItems
       var itemsData = exoticData.map((exotic) => {
